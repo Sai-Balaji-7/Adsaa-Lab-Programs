@@ -1,46 +1,61 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class MergeSort {
+public class MergeSortAlgorithm {
 
-    // Merge Sort method
-    static void mergeSort(int arr[], int left, int right) {
-        if (left < right) {
-            int mid = (left + right) / 2;
-            mergeSort(arr, left, mid);
-            mergeSort(arr, mid + 1, right);
-            merge(arr, left, mid, right);
+    // Global array to be sorted
+    static int[] a;
+
+    // Main MergeSort function
+    static void mergeSort(int low, int high) {
+        if (low < high) {
+            int mid = (low + high) / 2;
+
+            mergeSort(low, mid);        // Sort left half
+            mergeSort(mid + 1, high);   // Sort right half
+            merge(low, mid, high);      // Merge both halves
         }
     }
 
-    // Merge two sorted subarrays
-    static void merge(int arr[], int left, int mid, int right) {
+    // Merge procedure
+    static void merge(int low, int mid, int high) {
 
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
+        int[] b = new int[a.length];   // Temporary array
 
-        int L[] = new int[n1];
-        int R[] = new int[n2];
+        int i = low;       // pointer for left subarray
+        int j = mid + 1;   // pointer for right subarray
+        int h = low;       // pointer for temp array
 
-        for (int i = 0; i < n1; i++)
-            L[i] = arr[left + i];
-
-        for (int j = 0; j < n2; j++)
-            R[j] = arr[mid + 1 + j];
-
-        int i = 0, j = 0, k = left;
-
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j])
-                arr[k++] = L[i++];
-            else
-                arr[k++] = R[j++];
+        // Compare and copy
+        while (i <= mid && j <= high) {
+            if (a[i] <= a[j]) {
+                b[h] = a[i];
+                i++;
+            } else {
+                b[h] = a[j];
+                j++;
+            }
+            h++;
         }
 
-        while (i < n1)
-            arr[k++] = L[i++];
+        // Copy remaining left elements
+        if (i > mid) {
+            for (int k = j; k <= high; k++) {
+                b[h] = a[k];
+                h++;
+            }
+        }
+        // Copy remaining right elements
+        else {
+            for (int k = i; k <= mid; k++) {
+                b[h] = a[k];
+                h++;
+            }
+        }
 
-        while (j < n2)
-            arr[k++] = R[j++];
+        // Copy back to original array
+        for (int k = low; k <= high; k++) {
+            a[k] = b[k];
+        }
     }
 
     // Main method
@@ -50,18 +65,19 @@ public class MergeSort {
 
         System.out.print("Enter number of elements: ");
         int n = sc.nextInt();
-        int arr[] = new int[n];
+
+        a = new int[n];
 
         System.out.println("Enter elements:");
-        for (int i = 0; i < n; i++)
-            arr[i] = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
 
-        mergeSort(arr, 0, n - 1);
+        mergeSort(0, n - 1);
 
-        System.out.println("Sorted Array (Merge Sort):");
-        for (int i = 0; i < n; i++)
-            System.out.print(arr[i] + " ");
-
-        sc.close();
+        System.out.println("Sorted array:");
+        for (int i = 0; i < n; i++) {
+            System.out.print(a[i] + " ");
+        }
     }
 }
