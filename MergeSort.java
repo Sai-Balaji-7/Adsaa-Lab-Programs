@@ -2,31 +2,30 @@ import java.util.*;
 
 public class MergeSortAlgorithm {
 
-    // Global array to be sorted
-    static int[] a;
+    int[] a;   // instance array
 
-    // Main MergeSort function
-    static void mergeSort(int low, int high) {
+    // Merge Sort function
+    void mergeSort(int low, int high) {
         if (low < high) {
             int mid = (low + high) / 2;
 
-            mergeSort(low, mid);        // Sort left half
-            mergeSort(mid + 1, high);   // Sort right half
-            merge(low, mid, high);      // Merge both halves
+            mergeSort(low, mid);
+            mergeSort(mid + 1, high);
+            merge(low, mid, high);
         }
     }
 
-    // Merge procedure
-    static void merge(int low, int mid, int high) {
+    // Merge function
+    void merge(int low, int mid, int high) {
 
-        int[] b = new int[a.length];   // Temporary array
+        int[] b = new int[a.length];   // temporary array
 
-        int i = low;       // pointer for left subarray
-        int j = mid + 1;   // pointer for right subarray
-        int h = low;       // pointer for temp array
+        int i = low;
+        int j = mid + 1;
+        int h = low;
 
-        // Compare and copy
         while (i <= mid && j <= high) {
+
             if (a[i] <= a[j]) {
                 b[h] = a[i];
                 i++;
@@ -37,15 +36,13 @@ public class MergeSortAlgorithm {
             h++;
         }
 
-        // Copy remaining left elements
+        // Copy remaining elements
         if (i > mid) {
             for (int k = j; k <= high; k++) {
                 b[h] = a[k];
                 h++;
             }
-        }
-        // Copy remaining right elements
-        else {
+        } else {
             for (int k = i; k <= mid; k++) {
                 b[h] = a[k];
                 h++;
@@ -58,7 +55,7 @@ public class MergeSortAlgorithm {
         }
     }
 
-    // Main method
+    // Main Method
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -66,18 +63,19 @@ public class MergeSortAlgorithm {
         System.out.print("Enter number of elements: ");
         int n = sc.nextInt();
 
-        a = new int[n];
+        MergeSortAlgorithm obj = new MergeSortAlgorithm();
+        obj.a = new int[n];
 
         System.out.println("Enter elements:");
         for (int i = 0; i < n; i++) {
-            a[i] = sc.nextInt();
+            obj.a[i] = sc.nextInt();
         }
 
-        mergeSort(0, n - 1);
+        obj.mergeSort(0, n - 1);
 
         System.out.println("Sorted array:");
         for (int i = 0; i < n; i++) {
-            System.out.print(a[i] + " ");
+            System.out.print(obj.a[i] + " ");
         }
     }
 }
