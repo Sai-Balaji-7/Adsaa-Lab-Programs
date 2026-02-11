@@ -1,56 +1,66 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class QuickSort {
+public class QuickSortAlgorithm {
 
-    // Quick Sort method
-    static void quickSort(int arr[], int low, int high) {
+    int[] a;   // instance variable
+
+    void quickSort(int low, int high) {
         if (low < high) {
-            int pi = partition(arr, low, high);
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
+            int j = partition(low, high);
+            quickSort(low, j - 1);
+            quickSort(j + 1, high);
         }
     }
 
-    // Partition method
-    static int partition(int arr[], int low, int high) {
-        int pivot = arr[high];  // pivot element
-        int i = low - 1;
+    int partition(int low, int high) {
 
-        for (int j = low; j < high; j++) {
-            if (arr[j] <= pivot) {
+        int pivot = a[low];
+        int i = low + 1;
+        int j = high;
+
+        while (i <= j) {
+
+            while (i <= high && a[i] <= pivot) {
                 i++;
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
+            }
+
+            while (a[j] > pivot) {
+                j--;
+            }
+
+            if (i < j) {
+                int temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
             }
         }
 
-        int temp = arr[i + 1];
-        arr[i + 1] = arr[high];
-        arr[high] = temp;
+        a[low] = a[j];
+        a[j] = pivot;
 
-        return i + 1;
+        return j;
     }
 
-    // Main method
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Enter number of elements: ");
         int n = sc.nextInt();
-        int arr[] = new int[n];
+
+        QuickSortAlgorithm obj = new QuickSortAlgorithm();
+        obj.a = new int[n];
 
         System.out.println("Enter elements:");
-        for (int i = 0; i < n; i++)
-            arr[i] = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            obj.a[i] = sc.nextInt();
+        }
 
-        quickSort(arr, 0, n - 1);
+        obj.quickSort(0, n - 1);
 
-        System.out.println("Sorted Array (Quick Sort):");
-        for (int i = 0; i < n; i++)
-            System.out.print(arr[i] + " ");
-
-        sc.close();
+        System.out.println("Sorted array:");
+        for (int i = 0; i < n; i++) {
+            System.out.print(obj.a[i] + " ");
+        }
     }
 }
